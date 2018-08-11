@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
 import * as Dropbox from "dropbox";
-import * as queryString from "query-string";
+import * as qs from "qs";
 import "./App.css";
 
 const dbx = new Dropbox.Dropbox({ clientId: "koee38ql2uh6axd" });
@@ -15,7 +14,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    const { access_token } = queryString.parse(window.location.hash) || {};
+    const { access_token } = qs.parse(window.location.hash.substr(1));
     if (access_token) {
       this.setState({ authenticated: true });
       const dbxUrl = new Dropbox.Dropbox({ accessToken: access_token });
