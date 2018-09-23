@@ -18,7 +18,7 @@ class Login extends Component {
     super(props)
     const accessToken = localStorage.getItem('access_token')
     const authUrl = dbx.getAuthenticationUrl(
-      'http://localhost:3000/auth/'
+      'https://dbox-slideshow.firebaseapp.com/auth/'
     )
     this.state = {
       authUrl
