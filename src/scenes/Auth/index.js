@@ -1,24 +1,24 @@
-import React, { Component } from "react";
-import * as Dropbox from "dropbox";
-import * as qs from "qs";
+import React, { Component } from 'react'
+import * as qs from 'qs'
 
 class Auth extends Component {
   componentDidMount() {
-    const { location, history } = this.props;
-    const { access_token } = qs.parse(location.hash.substr(1));
+    const { location, history } = this.props
+    const { access_token } = qs.parse(location.hash.substr(1))
     if (access_token) {
+      localStorage.setItem('access_token', access_token)
       history.push({
-        pathname: "/dashboard",
+        pathname: '/dashboard',
         state: { accessToken: access_token }
-      });
+      })
     } else {
       history.push({
-        pathname: "/"
-      });
+        pathname: '/'
+      })
     }
   }
   render() {
-    return null;
+    return null
   }
 }
-export default Auth;
+export default Auth
