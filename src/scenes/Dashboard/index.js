@@ -44,6 +44,8 @@ class Dashboard extends Component {
       this.state = {
         dbxUrl: new Dropbox.Dropbox({ accessToken }),
         path: '',
+        files: [],
+        images: [],
         folders: null
       }
     } else {
@@ -81,10 +83,12 @@ class Dashboard extends Component {
     const { history } = this.props
     dbxUrl.filesListFolder({ path }).then(response => {
       const files = getFiles(response)
+      this.setState({ files: files })
       const images = []
       files.forEach(file => {
         dbxUrl.filesGetTemporaryLink({ path: file.path_lower }).then(image => {
           images.push(image)
+          this.setState({ images })
           if (images.length === files.length) {
             history.push({
               pathname: '/slideshow',
@@ -97,11 +101,11 @@ class Dashboard extends Component {
   }
 
   render () {
-    const { folders, path } = this.state
+    const { folders, path, images, files } = this.state
     return folders ? (
       <Wrapper>
         <div>
-          <Title>Choose a Folder</Title>
+          { folders.length ? <Title>Choose a Folder</Title> : <Title>This folder does not contain more folders. Refresh the page to start over.</Title> }
           <Form onSubmit={this.initSlideshow}>
             <FormOptions>
               {folders.map(folder => {
@@ -126,7 +130,10 @@ class Dashboard extends Component {
         </div>
       </Wrapper>
     ) : (
-      <Wrapper>Loading...</Wrapper>
+      <Wrapper>
+        <div>Loading...</div>
+        { images.length > 0 && <div>{images.length} of {files.length} Images Downloaded</div> }
+      </Wrapper>
     )
   }
 }
